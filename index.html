@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">import React, { useState, useEffect } from 'react';</span></p>
+<p class="p1"><span class="s1">import { Trophy, BookOpen, Lightbulb, User, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- 模拟数据 ---</span></p>
+<p class="p1"><span class="s1">const LESSONS = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{ id: 1, title: "鸡兔同笼基础", difficulty: "入门", points: 50 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{ id: 2, title: "周期问题寻规律", difficulty: "进阶", points: 100 },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{ id: 3, title: "抽屉原理初探", difficulty: "竞赛", points: 150 },</span></p>
+<p class="p1"><span class="s1">];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const App = () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const [activeTab, setActiveTab] = useState('lab'); // lab, challenge, profile</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const [score, setScore] = useState(1250);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const [showFeedback, setShowFeedback] = useState(null);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// --- 模块 1: 思维实验室 (天平逻辑) ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const BalanceLab = () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [leftWeight, setLeftWeight] = useState(0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [rightWeight, setRightWeight] = useState(12); // 目标重量</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div className="bg-white p-8 rounded-3xl shadow-xl border-4 border-orange-100"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h2 className="text-2xl font-bold text-orange-600 mb-4 flex items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Lightbulb className="mr-2" /&gt; 思维实验室：逻辑天平</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p className="text-gray-600 mb-6"&gt;通过放入不同重量的方块，让天平达到平衡。理解“等量代换”原理。&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="relative h-64 flex flex-col items-center justify-end"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{/* 天平横梁 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className={`w-full h-2 bg-gray-400 rounded-full transition-transform duration-500 transform ${leftWeight &lt; rightWeight ? '-rotate-6' : leftWeight &gt; rightWeight ? 'rotate-6' : 'rotate-0'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{/* 左盘 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="absolute left-0 -bottom-2 w-24 h-12 border-b-4 border-l-4 border-r-4 border-gray-400 rounded-b-xl flex items-end justify-center pb-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">               </span>{Array.from({length: leftWeight}).map((_, i) =&gt; &lt;div key={i} className="w-4 h-4 bg-blue-400 m-0.5 rounded shadow-sm"&gt;&lt;/div&gt;)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{/* 右盘 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="absolute right-0 -bottom-2 w-24 h-12 border-b-4 border-l-4 border-r-4 border-gray-400 rounded-b-xl flex items-end justify-center pb-1 text-xs font-bold text-gray-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">               </span>{rightWeight}kg</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{/* 底座 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="w-12 h-32 bg-gray-300 rounded-t-full mt-2"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="mt-8 flex gap-4 justify-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{[1, 2, 5].map(w =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>key={w}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>onClick={() =&gt; setLeftWeight(prev =&gt; prev + w)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl font-bold transition shadow-lg active:scale-95"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>放入 {w}kg</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button onClick={() =&gt; setLeftWeight(0)} className="px-6 py-3 bg-gray-200 text-gray-600 rounded-2xl"&gt;重置&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{leftWeight === rightWeight &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="mt-4 p-4 bg-green-100 text-green-700 rounded-xl text-center font-bold animate-bounce"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>🎉 太棒了！天平平衡了！</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// --- 模块 2: 挑战之巅 (每日一题) ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const DailyChallenge = () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [answer, setAnswer] = useState('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const checkAnswer = () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(answer === '14') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setShowFeedback('correct');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setScore(s =&gt; s + 20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>setShowFeedback('wrong');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div className="bg-white p-8 rounded-3xl shadow-xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="flex justify-between items-center mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span className="px-4 py-1 bg-purple-100 text-purple-600 rounded-full text-sm font-bold"&gt;每日挑战 · 难度：★★★☆☆&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span className="text-gray-400"&gt;2026年1月21日&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="text-xl font-medium text-gray-800 mb-8 leading-relaxed"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>“鸡兔同笼，头共 20 个，脚共 54 只。请问兔有多少只？”</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="flex gap-4 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>type="number"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>placeholder="输入你的答案"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>className="flex-1 p-4 border-2 border-gray-100 rounded-2xl focus:border-blue-400 outline-none transition text-2xl"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>value={answer}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onChange={(e) =&gt; setAnswer(e.target.value)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onClick={checkAnswer}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>className="px-8 py-4 bg-orange-500 text-white rounded-2xl font-bold hover:bg-orange-600 transition"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>提交答案</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{showFeedback === 'correct' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="flex items-center text-green-600 font-bold bg-green-50 p-4 rounded-xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;CheckCircle2 className="mr-2" /&gt; 回答正确！你获得了 20 积分奖励！</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{showFeedback === 'wrong' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="flex items-center text-red-500 font-bold bg-red-50 p-4 rounded-xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;AlertCircle className="mr-2" /&gt; 再想一想，你可以试着假设全部都是鸡。</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div className="min-h-screen bg-slate-50 font-sans text-gray-900 pb-20"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{/* 顶部导航 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;nav className="bg-white px-6 py-4 shadow-sm flex justify-between items-center sticky top-0 z-50"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="flex items-center space-x-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-2xl"&gt;M&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span className="text-xl font-black tracking-tight text-blue-600"&gt;MathQuest&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="flex items-center space-x-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="bg-orange-50 px-4 py-2 rounded-full flex items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Trophy className="w-5 h-5 text-orange-500 mr-2" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span className="font-bold text-orange-700"&gt;{score} 积分&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center border-2 border-white shadow-sm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;User className="text-gray-500" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/nav&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;main className="max-w-4xl mx-auto mt-8 px-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{/* Tab 切换 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div className="flex space-x-4 mb-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onClick={() =&gt; setActiveTab('lab')}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>className={`px-6 py-3 rounded-2xl font-bold transition ${activeTab === 'lab' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-500 hover:bg-gray-100'}`}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>思维实验室</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>onClick={() =&gt; setActiveTab('challenge')}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>className={`px-6 py-3 rounded-2xl font-bold transition ${activeTab === 'challenge' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'bg-white text-gray-500 hover:bg-gray-100'}`}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>每日挑战</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{/* 内容区域 */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{activeTab === 'lab' &amp;&amp; &lt;BalanceLab /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{activeTab === 'challenge' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div className="space-y-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;DailyChallenge /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="grid grid-cols-1 md:grid-cols-3 gap-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>{LESSONS.map(lesson =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div key={lesson.id} className="bg-white p-6 rounded-3xl border border-gray-100 hover:shadow-md transition cursor-pointer group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;BookOpen className="text-blue-500 mb-3" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;h3 className="font-bold mb-1"&gt;{lesson.title}&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;div className="text-sm text-gray-400 flex justify-between items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;span&gt;{lesson.difficulty}&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/main&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{/* 底部导航 (移动端友好) */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-6 py-3 flex justify-around md:hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">         </span>{/* 移动端图标导航... */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>);</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">export default App;</span></p>
+</body>
+</html>
